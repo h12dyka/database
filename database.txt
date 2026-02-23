@@ -1,0 +1,31 @@
+// database/migrations/2026_02_02_000003_create_activity_evidences_table.php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('activity_evidences', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('activity_id')->constrained()->onDelete('cascade');
+            $table->string('file_path');
+            $table->string('file_type'); // image, document, video
+            $table->string('file_name');
+            $table->integer('file_size');
+            $table->string('mime_type');
+            $table->text('description')->nullable();
+            $table->boolean('is_compressed')->default(false);
+            $table->json('metadata')->nullable(); // OCR results, GPS data, etc
+            $table->timestamps();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('activity_evidences');
+    }
+};
